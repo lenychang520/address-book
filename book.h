@@ -3,19 +3,21 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <errno.h>
 
 typedef struct Profile
 {
 	char name[20];
 	char sex[10];
 	char phone[12];
-	int age;//这里的age不要改成数组的形式，否则后续打印的时候会出bug
+	int age;//杩欓噷鐨刟ge涓嶈鏀规垚鏁扮粍鐨勫舰寮忥紝鍚﹀垯鍚庣画鎵撳嵃鐨勬椂鍊欎細鍑篵ug
 }Profile;
 
 typedef struct Contact
 {
-	Profile date[100];
+	Profile* date;
 	int count;
+	int capacity;
 }Contact;
 
 
@@ -28,3 +30,4 @@ void Find(const Contact* con);
 void Modify(Contact* con);
 void Sort(Contact* con);
 int sort(const void* name1, const void* name2);
+void Modify_capacity(Contact* con);

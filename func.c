@@ -1,6 +1,6 @@
 #include "book.h"
 
-int find(Contact* con, char name[20])
+int find(const Contact* con, char name[20])//æ‰¾åˆ°è”ç³»äººçš„ä¸‹æ ‡å¹¶è¿”å›
 {
 	assert(con);
 	int i = 0;
@@ -17,30 +17,37 @@ int find(Contact* con, char name[20])
 void Add(Contact* con)
 {
 	assert(con);
-	printf("ÇëÊäÈëÁªÏµÈËµÄĞÕÃû\n");
+	printf("è¯·è¾“å…¥è”ç³»äººçš„å§“å\n");
 	scanf("%20s", con->date[con->count].name);
-	printf("ÇëÊäÈëÁªÏµÈËµÄĞÔ±ğ\n");
+	printf("è¯·è¾“å…¥è”ç³»äººçš„æ€§åˆ«\n");
 	scanf("%10s", con->date[con->count].sex);
-	printf("ÇëÊäÈëÁªÏµÈËµÄºÅÂë\n");
+	printf("è¯·è¾“å…¥è”ç³»äººçš„å·ç \n");
 	scanf("%12s", con->date[con->count].phone);
-	printf("ÇëÊäÈëÁªÏµÈËµÄÄêÁä\n");
+	printf("è¯·è¾“å…¥è”ç³»äººçš„å¹´é¾„\n");
 	scanf("%d", &con->date[con->count].age);
-	con->count++;//Ê¹µÃÃ¿´ÎÔö¼ÓµÄ´ÎÊı¶¼ÄÜ²½½ø
-	printf("Ôö¼Ó³É¹¦\n");
+	con->count++;//ä½¿å¾—æ¯æ¬¡å¢åŠ çš„æ¬¡æ•°éƒ½èƒ½æ­¥è¿›
+	printf("å¢åŠ æˆåŠŸ\n");
 }
 
 void Initial(Contact* con)
 {
 	assert(con);
+	con->capacity = 100;
 	con->count = 0;
-	memset(con->date, 0, sizeof(con->date));
+	con->date = (Profile*)calloc(100, sizeof(Profile));//é»˜è®¤çš„é€šè®¯å½•å¤§å°ä¸º100ä¸ªè”ç³»äºº
+	if (con->date == NULL)
+	{
+		printf("%s\n", strerror(errno));
+		return;
+	}
+	//åä¸æ¥freeï¼Œå› ä¸ºè¿™ä¸ªé€šè®¯å½•æ•´ä¸ªç¨‹åºéƒ½è¦ç”¨
 }
 
 void Display(const Contact* con)
 {
 	assert(con);
 	int i = 0;
-	printf("%-20s\t%-10s\t%-12s\t%-s\n", "ĞÕÃû", "ĞÔ±ğ", "ÊÖ»úºÅ", "ÄêÁä");
+	printf("%-20s\t%-10s\t%-12s\t%-s\n", "å§“å", "æ€§åˆ«", "æ‰‹æœºå·", "å¹´é¾„");
 	for (i = 0; i < con->count; i++)
 	{
 		printf("%-20s\t%-10s\t%-12s\t%-d\n", con->date[i].name, con->date[i].sex, con->date[i].phone, con->date[i].age);
@@ -51,81 +58,91 @@ void Del(Contact* con)
 {
 	assert(con);
 	char name[20] = { 0 };
-	printf("ÇëÊäÈëÄãÏëÒªÉ¾³ıµÄÁªÏµÈËµÄĞÕÃû\n");
+	printf("è¯·è¾“å…¥ä½ æƒ³è¦åˆ é™¤çš„è”ç³»äººçš„å§“å\n");
 	scanf("%20s", name);
 	int ret = find(con, name);
 	if (ret != -1)
 	{
 		int i = 0;
-		for (i = ret; i < con->count - 1; i++)//½«ºóĞøµÄÊı¾İÈ«²¿ÍùÇ°ÒÆ
+		for (i = ret; i < con->count - 1; i++)//å°†åç»­çš„æ•°æ®å…¨éƒ¨å¾€å‰ç§»
 		{
 			con->date[i] = con->date[i + 1];
 		}
-		memset(&con->date[con->count - 1], 0, sizeof(con->date[con->count]));//½«×îºóµÄÒ»¸ö¾ÉÊı×éÇå¿Õ
+		memset(&con->date[con->count - 1], 0, sizeof(con->date[con->count]));//å°†æœ€åçš„ä¸€ä¸ªæ—§æ•°ç»„æ¸…ç©º
 		con->count--;
-		printf("É¾³ı³É¹¦\n");
+		printf("åˆ é™¤æˆåŠŸ\n");
 	}
 	else
 	{
-		printf("²»´æÔÚÕâÃ´Ò»¸öÁªÏµÈË\n");
+		printf("ä¸å­˜åœ¨è¿™ä¹ˆä¸€ä¸ªè”ç³»äºº\n");
 	}
 }
 
-void Find(const Contact* con)
+void Find(const Contact* con)//æ›´ç±»ä¼¼äºæŸ¥çœ‹è”ç³»äºº
 {
 	assert(con);
 	char name[20] = { 0 };
-	printf("ÇëÊäÈëÄãÒª²éÕÒµÄÁªÏµÈËµÄĞÕÃû\n");
+	printf("è¯·è¾“å…¥ä½ è¦æŸ¥æ‰¾çš„è”ç³»äººçš„å§“å\n");
 	scanf("%20s", name);
 	int ret = find(con, name);
 	if (ret != -1)
 	{
-		printf("%-20s\t%-10s\t%-12s\t%-s\n", "ĞÕÃû", "ĞÔ±ğ", "ÊÖ»úºÅ", "ÄêÁä");
+		printf("%-20s\t%-10s\t%-12s\t%-s\n", "å§“å", "æ€§åˆ«", "æ‰‹æœºå·", "å¹´é¾„");
 		printf("%-20s\t%-10s\t%-12s\t%-d\n", con->date[ret].name, con->date[ret].sex, con->date[ret].phone, con->date[ret].age);
 	}
 	else
 	{
-		printf("¸ÃÁªÏµÈË²»´æÔÚ\n");
+		printf("è¯¥è”ç³»äººä¸å­˜åœ¨\n");
 	}
 }
 
 void Modify(Contact* con)
 {
 	char name[20] = { 0 };
-	printf("ÇëÊäÈëÄãÒªĞŞ¸ÄµÄÁªÏµÈËĞÕÃû\n");
+	printf("è¯·è¾“å…¥ä½ è¦ä¿®æ”¹çš„è”ç³»äººå§“å\n");
 	scanf("%20s", name);
 	int ret = find(con, name);
 	if (ret != -1)
 	{
-		printf("ÒÔÏÂÊÇ¸ÃÁªÏµÈËµÄĞÅÏ¢\n");
-		printf("%-20s\t%-10s\t%-12s\t%-s\n", "ĞÕÃû", "ĞÔ±ğ", "ÊÖ»úºÅ", "ÄêÁä");
+		printf("ä»¥ä¸‹æ˜¯è¯¥è”ç³»äººçš„ä¿¡æ¯\n");
+		printf("%-20s\t%-10s\t%-12s\t%-s\n", "å§“å", "æ€§åˆ«", "æ‰‹æœºå·", "å¹´é¾„");
 		printf("%-20s\t%-10s\t%-12s\t%-d\n", con->date[ret].name, con->date[ret].sex, con->date[ret].phone, con->date[ret].age);
-		printf("ÇëÊäÈëĞŞ¸ÄºóÁªÏµÈËµÄĞÕÃû\n");
+		printf("è¯·è¾“å…¥ä¿®æ”¹åè”ç³»äººçš„å§“å\n");
 		scanf("%20s", con->date[ret].name);
-		printf("ÇëÊäÈëĞŞ¸ÄºóÁªÏµÈËµÄĞÔ±ğ\n");
+		printf("è¯·è¾“å…¥ä¿®æ”¹åè”ç³»äººçš„æ€§åˆ«\n");
 		scanf("%10s", con->date[ret].sex);
-		printf("ÇëÊäÈëĞŞ¸ÄºóÁªÏµÈËµÄºÅÂë\n");
+		printf("è¯·è¾“å…¥ä¿®æ”¹åè”ç³»äººçš„å·ç \n");
 		scanf("%12s", con->date[ret].phone);
-		printf("ÇëÊäÈëĞŞ¸ÄºóÁªÏµÈËµÄÄêÁä\n");
+		printf("è¯·è¾“å…¥ä¿®æ”¹åè”ç³»äººçš„å¹´é¾„\n");
 		scanf("%d", &con->date[ret].age);
-		printf("ĞŞ¸Ä³É¹¦\n");
-		printf("%-20s\t%-10s\t%-12s\t%-s\n", "ĞÕÃû", "ĞÔ±ğ", "ÊÖ»úºÅ", "ÄêÁä");
+		printf("ä¿®æ”¹æˆåŠŸ\n");
+		printf("%-20s\t%-10s\t%-12s\t%-s\n", "å§“å", "æ€§åˆ«", "æ‰‹æœºå·", "å¹´é¾„");
 		printf("%-20s\t%-10s\t%-12s\t%-d\n", con->date[ret].name, con->date[ret].sex, con->date[ret].phone, con->date[ret].age);
 	}
 	else
 	{
-		printf("¸ÃÁªÏµÈË²»´æÔÚ\n");
+		printf("è¯¥è”ç³»äººä¸å­˜åœ¨\n");
 	}
 }
 
-int sort(const void* name1, const void* name2)//½ÓÊÕµ½µÄÊÇProfile½á¹¹ÌåÖ¸Õë£¬ÃûÎªname1ºÍname2¡£
+int sort(const void* name1, const void* name2)//æ¥æ”¶åˆ°çš„æ˜¯Profileç»“æ„ä½“æŒ‡é’ˆï¼Œåä¸ºname1å’Œname2ã€‚
 {
-	return strcmp(((const Profile*)name1)->name, ((const Profile*)name2)->name);//Òò´Ë°ÑËü´ÓvoidÖ¸Õë×ª»¯³ÉProfile½á¹¹ÌåÖ¸Õë
+	return strcmp(((const Profile*)name1)->name, ((const Profile*)name2)->name);//å› æ­¤æŠŠå®ƒä»voidæŒ‡é’ˆè½¬åŒ–æˆProfileç»“æ„ä½“æŒ‡é’ˆ
 }
 
 void Sort(Contact* con)
 {
 	qsort(con->date, con->count, sizeof(con->date[0]), sort);
-	printf("ÅÅĞò³É¹¦\n");
+	printf("æ’åºæˆåŠŸ\n");
 }
 
+void Modify_capacity(Contact* con)
+{
+	printf("ç°åœ¨çš„é€šè®¯å½•å®¹é‡ä¸º%dï¼Œè¯·è¾“å…¥æ”¹å˜åçš„é€šè®¯å½•å®¹é‡ï¼š\n", con->capacity);
+	int input = 0;
+	scanf("%d", &input);
+	con->capacity = input;
+	Profile* p = realloc(con->date, input * sizeof(Profile));
+	con->date = p;
+	printf("ä¿®æ”¹æˆåŠŸ\n");
+}

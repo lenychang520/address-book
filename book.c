@@ -1,7 +1,6 @@
 #include "book.h"
 //增、删、查、改、看、排、退
-enum choice
-{
+enum choice {
 	退出通讯录,
 	增加联系人,
 	删除联系人,
@@ -12,8 +11,7 @@ enum choice
 	修改最大容量
 };
 
-void menu()
-{
+void menu() {
 	printf("***********************************************************\n");
 	printf("***********1.增加联系人         2.删除联系人***************\n");
 	printf("***********3.查找联系人         4.修改联系人***************\n");
@@ -22,72 +20,63 @@ void menu()
 	printf("***********************************************************\n");
 }
 
-int main()
-{
+int main() {
 	Contact con;
 	//初始化通讯录
 	Initial(&con);
 	int input = 0;
-	do
-	{
+	do {
 		menu();
-		if (scanf("%d", &input) == 0)
-		{
+		if (scanf("%d", &input) == 0) {
 			printf("请输入正确的数字，而非字符\n");
 			getchar();//清除缓冲区，防止陷入死循环
 			continue;
 		}
-		switch (input)
-		{
+		switch (input) {
 		case 增加联系人:
-			if (con.count >= con.capacity)//防止数组溢出
-			{
+			if (con.count >= con.capacity) {//防止数组溢出
 				printf("你最多只能存储%d个联系人，请删除部分联系人后再进行存储\n", con.capacity);
 				continue;
 			}
 			Add(&con);
 			break;
 		case 删除联系人:
-			if (con.count == 0)
-			{
+			if (con.count == 0) {
 				printf("你的通讯录里没有一个联系人\n");
 				continue;
 			}
 			Del(&con);
 			break;
 		case 查找联系人:
-			if (con.count == 0)
-			{
+			if (con.count == 0) {
 				printf("你的通讯录里没有一个联系人\n");
 				continue;
 			}
 			Find(&con);
 			break;		
 		case 修改联系人:
-			if (con.count == 0)
-			{
+			if (con.count == 0) {
 				printf("你的通讯录里没有一个联系人\n");
 				continue;
 			}
 			Modify(&con);
 			break;
 		case 查看通讯录:
-			if (con.count == 0)
-			{
+			if (con.count == 0) {
 				printf("你的通讯录里没有一个联系人\n");
 				continue;
 			}
 			Display(&con);
 			break;
 		case 通讯录排序:
-			if (con.count == 0)
-			{
+			if (con.count == 0) {
 				printf("你的通讯录里没有一个联系人\n");
 				continue;
 			}
 			Sort(&con);
 			break;
 		case 退出通讯录:
+			Save(&con);
 			printf("正在退出\n");
 			break;
 		case 修改最大容量:

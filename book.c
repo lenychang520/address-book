@@ -1,7 +1,7 @@
 #include "book.h"
-//增、删、查、改、看、排、退
-enum choice {
-	退出通讯录,
+
+enum choice {//用枚举来表示退、增、删、查、改、看、排、扩几大功能，方便后续的switch能清楚看清每个case的功能
+	退出并保存,
 	增加联系人,
 	删除联系人,
 	查找联系人,
@@ -16,7 +16,7 @@ void menu() {
 	printf("***********1.增加联系人         2.删除联系人***************\n");
 	printf("***********3.查找联系人         4.修改联系人***************\n");
 	printf("***********5.查看通讯录         6.通讯录排序***************\n");
-	printf("***********0.退出通讯录         7.修改最大容量*************\n");
+	printf("***********0.退出并保存         7.修改最大容量*************\n");
 	printf("***********************************************************\n");
 }
 
@@ -24,17 +24,19 @@ int main() {
 	Contact con;
 	//初始化通讯录
 	Initial(&con);
-	int input = 0;
+	int input = 10;//不要初始化为0，防止一旦输入错误就直接退出程序
 	do {
 		menu();
 		if (scanf("%d", &input) == 0) {
 			printf("请输入正确的数字，而非字符\n");
-			getchar();//清除缓冲区，防止陷入死循环
+			while (getchar() != '\n') {//清空缓存区
+				;
+			}
 			continue;
 		}
 		switch (input) {
 		case 增加联系人:
-			if (con.count >= con.capacity) {//防止数组溢出
+			if (con.count >= con.capacity) {//防止数组溢出，使联系人数量在通讯录的容量范围内
 				printf("你最多只能存储%d个联系人，请删除部分联系人后再进行存储\n", con.capacity);
 				continue;
 			}
@@ -75,7 +77,7 @@ int main() {
 			}
 			Sort(&con);
 			break;
-		case 退出通讯录:
+		case 退出并保存:
 			Save(&con);
 			printf("正在退出\n");
 			break;

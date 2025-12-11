@@ -19,14 +19,14 @@ typedef struct Contact {
 }Contact;
 
 
-void Add(Contact* con);
-void Initial(Contact* con);
-void Display(const Contact* con);
-void Del(Contact* con);
-int find(const Contact* con, char name[20]);
-void Find(const Contact* con);
-void Modify(Contact* con);
-void Sort(Contact* con);
-int sort(const void* name1, const void* name2);
+void Add(Contact* con);//增加联系人
+void Initial(Contact* con);//初始化通讯录
+void Display(const Contact* con);//展示通讯录讯息
+void Del(Contact* con);//删除联系人
+int find(const Contact* con, char name[20]);//找到联系人的下标并返回
+void Find(const Contact* con);//查找联系人
+void Modify(Contact* con);//修改通讯录讯息
+void Sort(Contact* con);//按姓名排序
+int sort(const void* name1, const void* name2);//该函数是用于qsort的比较函数
 void Modify_capacity(Contact* con);//扩容
 void Save(const Contact* con);//保存通讯录
